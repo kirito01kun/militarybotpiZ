@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stream Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .feed {
+            flex-basis: 45%; /* Adjust as needed */
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .feed h2 {
+            font-size: 20px;
+            color: #666;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .feed img {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        .control-panel {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .control-panel .button-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .control-panel .button-group.vertical {
+            flex-direction: column;
+        }
+
+        .control-panel .button-group.horizontal {
+            flex-direction: row;
+        }
+
+        .control-panel .button {
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .control-panel .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="feed">
+            <h2>Video Feed from Raspberry Pi</h2>
+            <img src="http://192.168.163.84:5000/vd" alt="Video Feed">
+        </div>
+        <div class="feed">
+            <h2>Thermal Feed from Raspberry Pi</h2>
+            <img src="http://192.168.163.84:5000/th" alt="Thermal Feed">
+        </div>
+        <div class="feed">
+            <div class="control-panel">
+                <div class="button-group horizontal">
+                    <button class="button">Up</button>
+                    <button class="button">Right</button>
+                </div>
+                <div class="button-group horizontal">
+                    <button class="button">Left</button>
+                    <button class="button">Down</button>
+                </div>
+            </div>
+        </div>
+        <div class="feed">
+            <div class="control-panel">
+                <div class="button-group vertical">
+                    <button class="button">Cam Up</button>
+                    <button class="button">Cam Down</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

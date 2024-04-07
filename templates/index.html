@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robot Control Panel</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+        .bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('/static/images/background.jpeg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            filter: blur(4px);
+            z-index: -1;
+        }
+        .content {
+            position: relative;
+            height: 100%;
+            overflow: auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .video-stream img, .plot img{
+            width: 600px;
+            height: 400px;
+        }
+        .control-panel {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .control-panel div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .btn-icon {
+            font-size: 30px; /* Larger icons */
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+        .panel-title {
+            margin-bottom: 15px; /* Space between title and icons */
+            font-weight: bold;
+        }
+        .direction-controls {
+            display: grid;
+            grid-template-areas:
+                'empty up empty'
+                'left empty right'
+                'empty down empty';
+            justify-items: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .direction-controls > button {
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .up { grid-area: up; }
+        .down { grid-area: down; }
+        .left { grid-area: left; }
+        .right { grid-area: right; }
+    </style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="content">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="logo.png" height="30" alt="logo">
+            </a>
+            <div class="ml-auto">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="video-stream col-md-6 bg-secondary">
+                <img src="http://192.168.163.84:5000/vd" alt="Video Feed">
+            </div>
+            <div class="plot col-md-6 bg-dark text-white d-flex align-items-center justify-content-center">
+                <img src="http://192.168.163.84:5000/th" alt="Thermal Feed">
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Control panels -->
+    <div class="control-panel">
+        <div>
+            <div class="panel-title">Robot Control Panel</div>
+            <div class="direction-controls">
+                <button class="btn-icon up"><i class="fa-solid fa-caret-up"></i></button>
+                <button class="btn-icon left"><i class="fa-solid fa-caret-left"></i></button>
+                <button class="btn-icon right"><i class="fa-solid fa-caret-right"></i></button>
+                <button class="btn-icon down"><i class="fa-solid fa-caret-down"></i></button>
+            </div>
+        </div>
+
+        <div>
+            <div class="panel-title">Camera Control Panel</div>
+            <button class="btn-icon"><i class="fa-solid fa-caret-up"></i></button>
+            <button class="btn-icon"><i class="fa-solid fa-caret-down"></i></button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
