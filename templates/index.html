@@ -122,10 +122,29 @@
 
         <div>
             <div class="panel-title">Camera Control Panel</div>
-            <button class="btn-icon"><i class="fa-solid fa-caret-up"></i></button>
-            <button class="btn-icon"><i class="fa-solid fa-caret-down"></i></button>
+            <button class="btn-icon cup"><i class="fa-solid fa-caret-up"></i></button>
+            <button class="btn-icon cdown"><i class="fa-solid fa-caret-down"></i></button>
         </div>
     </div>
 </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get all direction buttons
+        var directionButtons = document.querySelectorAll('.control-panel button');
+
+        // Add click event listener to each direction button
+        directionButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                // Get the direction from button's class name
+                var direction = button.classList[1]; // Assumes class name is 'up', 'down', 'left', or 'right'
+
+                // Send AJAX request to Flask server
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', '/send_message?direction=' + direction, true);
+                xhr.send();
+            });
+        });
+    });
+</script>
 </body>
 </html>
