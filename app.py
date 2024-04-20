@@ -1,12 +1,25 @@
 from flask import Flask, render_template, request
 import subprocess
-from nrf_sender import send_nrf
+import threading
+import nrf_sender
 
 app = Flask(__name__, static_url_path='/static')
 
+temp = None
+
+def update_temp():
+    global temp
+    while True:
+        temp = nrf_sender.MAX_TEMP
+
+
+update_thread = threading.Thread(target=update_temp)
+update_thread.daemon = True
+update_thread.start()
+
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', temp=temp)
 
 @app.route('/send_message')
 def send_message():
@@ -24,7 +37,8 @@ def send_message():
 
     message = messages.get(direction, 'Unknown Direction')
 
-    send_nrf(message)
+    nrf_sender.send_nrf(message)
+
     return 'Message Sent'
 
 if __name__ == '__main__':

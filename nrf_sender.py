@@ -3,8 +3,11 @@ import time
 import pigpio
 from nrf24 import *
 
+MAX_TEMP = None
+
 def send_nrf(message, hostname='localhost', port=8888, address='1SNSR'):
     # Connect to pigpiod
+    global MAX_TEMP
 
     print("I'm being called with the Msg:" + message)
     pi = pigpio.pi(hostname, port)
@@ -38,7 +41,7 @@ def send_nrf(message, hostname='localhost', port=8888, address='1SNSR'):
             if nrf.data_ready():
                 pipe = nrf.data_pipe()
                 response = nrf.get_payload().decode()
-                print(f"Response received: {response}")
+                MAX_TEMP = response
                 break  # Exit loop once response received
 
         time.sleep(0.1)  # Adjust the sleep time as needed
