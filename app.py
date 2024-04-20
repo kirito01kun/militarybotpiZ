@@ -41,5 +41,12 @@ def send_message():
 
     return 'Message Sent'
 
+@app.route('/get_temperature')
+def get_temperature():
+    global temp
+    # Return the current temperature as JSON
+    return jsonify({'temperature': temp})
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000, debug=True)
