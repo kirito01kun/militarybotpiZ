@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -99,7 +97,7 @@
 
     <div class="container mt-4">
         <div class="row">
-		<h1>Temp : {{ temp}}</h1>
+		<h1>Temp: <span id="temperature">Loading...</span></h1>
             <div class="video-stream col-md-6 bg-secondary">
                 <img src="http://192.168.137.77:5000/vd" alt="Video Feed">
             </div>
@@ -148,6 +146,29 @@
             });
         });
     });
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Function to update the temperature display
+    function updateTemperature() {
+        // Send an AJAX request to fetch the temperature
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/get_temperature', true);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                // Update the temperature display with the received value
+                var temperature = JSON.parse(xhr.responseText).temperature;
+                document.getElementById('temperature').textContent = temperature;
+            }
+        };
+        xhr.send();
+    }
+
+    // Call the updateTemperature function initially
+    updateTemperature();
+
+    // Update the temperature every 5 seconds
+    setInterval(updateTemperature, 5000);
+});
 </script>
 </body>
 </html>
