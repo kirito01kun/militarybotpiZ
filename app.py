@@ -31,6 +31,10 @@ def send_message():
         'down': 'd',
         'left': 'l',
         'right': 'r',
+        'upl': 'ul',
+        'downl':'dl',
+        'right':'rl',
+        'leftl':'ll',
         'cup': 'cu',
         'cdown': 'cd'
     }
