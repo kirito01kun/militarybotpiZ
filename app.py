@@ -28,7 +28,7 @@ def send_message():
     # Map direction to the corresponding message
     messages = {
         'up': 'u',
-        'down': 'd',
+        'down': 'b',
         'left': 'l',
         'right': 'r',
         'upl': 'ul',

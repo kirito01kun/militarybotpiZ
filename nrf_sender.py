@@ -40,6 +40,7 @@ def send_nrf(message, hostname='localhost', port=8888, address='1SNSR'):
         while time.time() - start_time < 3:  # Wait for 1 second for response
             if nrf.data_ready():
                 pipe = nrf.data_pipe()
+
                 response = nrf.get_payload().decode()
                 MAX_TEMP = response
                 break  # Exit loop once response received
