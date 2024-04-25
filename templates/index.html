@@ -130,22 +130,71 @@
 </div>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Get all direction buttons
-        var directionButtons = document.querySelectorAll('.control-panel button');
+    // Get all direction buttons
+    var directionButtons = document.querySelectorAll('.control-panel button');
 
-        // Add click event listener to each direction button
-        directionButtons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                // Get the direction from button's class name
-                var direction = button.classList[1]; // Assumes class name is 'up', 'down', 'left', or 'right'
+    // Function to send message with direction
+    function sendMessage(direction) {
+        // Send AJAX request to Flask server
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/send_message?direction=' + direction, true);
+        xhr.send();
+    }
 
-                // Send AJAX request to Flask server
-                var xhr = new XMLHttpRequest();
-                xhr.open('GET', '/send_message?direction=' + direction, true);
-                xhr.send();
-            });
+    // Function to handle long press
+    function handleLongPress(direction) {
+        // Send a different message for long press
+        var longPressMessage = '';
+
+        switch (direction) {
+            case 'up':
+                longPressMessage = 'upl';
+                break;
+            case 'down':
+                longPressMessage = 'downl';
+                break;
+	    case 'right':
+                longPressMessage = 'rightl';
+                break;
+            case 'left':
+                longPressMessage = 'leftl';
+                break;
+            default:
+                break;
+        }
+
+        if (longPressMessage !== '') {
+            sendMessage(longPressMessage);
+        }
+    }
+
+    // Add event listeners for mouse down and mouse up events
+    directionButtons.forEach(function(button) {
+        var direction = button.classList[1]; // Assumes class name is 'up', 'down', 'left', or 'right'
+        var timerId;
+
+        button.addEventListener('mousedown', function() {
+            // Start a timer when button is pressed
+            timerId = setTimeout(function() {
+                handleLongPress(direction);
+            }, 1000); // 1 second for long press
+
+            // Send the short press command immediately
+            sendMessage(direction);
+        });
+
+        button.addEventListener('mouseup', function() {
+            // Clear the timer when button is released
+            clearTimeout(timerId);
+        });
+
+        // Also clear the timer if the mouse leaves the button
+        button.addEventListener('mouseleave', function() {
+            clearTimeout(timerId);
         });
     });
+});
+
 
 document.addEventListener('DOMContentLoaded', function() {
     // Function to update the temperature display
