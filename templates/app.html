@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robot Control Panel</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+        .bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('/static/images/background.jpeg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            filter: blur(4px);
+            z-index: -1;
+        }
+        .content {
+            position: relative;
+            height: 100%;
+            overflow: auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .video-stream img, .plot img{
+            width: 600px;
+            height: 400px;
+        }
+        .control-panel {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .control-panel div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .btn-icon {
+            font-size: 30px; /* Larger icons */
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+        .panel-title {
+            margin-bottom: 15px; /* Space between title and icons */
+            font-weight: bold;
+        }
+        .direction-controls {
+            display: grid;
+            grid-template-areas:
+                'empty up empty'
+                'left empty right'
+                'empty down empty';
+            justify-items: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .direction-controls > button {
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .up { grid-area: up; }
+        .down { grid-area: down; }
+        .left { grid-area: left; }
+        .right { grid-area: right; }
+        .map-container {
+            height: 400px;
+            width: 100%;
+            margin-top: 20px;
+            position: relative;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body onload="initMap()">
+<div class="bg"></div>
+<div class="content">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="/static/images/logo.png" height="30" alt="logo">
+            </a>
+            <div class="ml-auto">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+		<h1>Temp: <span id="temperature">Loading...</span></h1>
+	<div class="row">
+            <div class="video-stream col-md-6 bg-secondary">
+                <img src="http://192.168.137.109:5000/vd" alt="Video Feed">
+            </div>
+            <div class="plot col-md-6 bg-dark text-white d-flex align-items-center justify-content-center">
+                <img src="http://192.168.137.109:5000/th" alt="Thermal Feed">
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="map-container col-12">
+                <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=-5.557%2C33.871%2C-5.551%2C33.875&amp;layer=mapnik&amp;marker=33.8735%2C-5.5539" style="border: none;"></iframe>
+            </div>
+        </div>
+        <p>Lon. : 33.87346441681934, Lat. : -5.553930589835494</p>
+    </div>
+
+
+
+    <!-- Control panels -->
+    <div class="control-panel">
+        <div>
+            <div class="panel-title">Robot Control Panel</div>
+            <div class="direction-controls">
+                <!-- <button class="btn-icon up"><i class="fa-solid fa-caret-up"></i></button>
+                <button class="btn-icon left"><i class="fa-solid fa-caret-left"></i></button>
+                <button class="btn-icon right"><i class="fa-solid fa-caret-right"></i></button>
+                <button class="btn-icon down"><i class="fa-solid fa-caret-down"></i></button> -->
+                <table center="align">
+                    <tr>
+                        <td> </td>
+                        <td> 
+                        <button class="btn-icon up"> <img src= "/static/images/Forward.png" alt="Forward" hegiht="50" width="75" ></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                              <button class="btn-icon left"> <img src= "/static/images/Left.png" alt="Left" hegiht="50" width="75" ></button>
+                        </td>
+                       <td>
+                          <button> <img src= "/static/images/Stop.png" alt="Stop" hegiht="50" width="75" ></button>
+                       </td>
+                       <td>
+                             <button class="btn-icon right"> <img src= "/static/images/Right.png" alt="Right" hegiht="50" width="75" ></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                               <button class="btn-icon down"> <img src= "/static/images/Backward.png" alt="Backwards" hegiht="50" width="75" ></button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div>
+            <div class="panel-title">Camera Control Panel</div>
+            <button class="btn-icon cup"><i class="fa-solid fa-caret-up"></i></button>
+            <button class="btn-icon cdown"><i class="fa-solid fa-caret-down"></i></button>
+        </div>
+    </div>
+</div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Get all direction buttons
+    var directionButtons = document.querySelectorAll('.control-panel button');
+
+    // Function to send message with direction
+    function sendMessage(direction) {
+        // Send AJAX request to Flask server
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/send_message?direction=' + direction, true);
+        xhr.send();
+    }
+
+    // Function to handle long press
+    function handleLongPress(direction) {
+        // Send a different message for long press
+        var longPressMessage = '';
+
+        switch (direction) {
+            case 'up':
+                longPressMessage = 'upl';
+                break;
+            case 'down':
+                longPressMessage = 'downl';
+                break;
+	    case 'right':
+                longPressMessage = 'rightl';
+                break;
+            case 'left':
+                longPressMessage = 'leftl';
+                break;
+            default:
+                break;
+        }
+
+        if (longPressMessage !== '') {
+            sendMessage(longPressMessage);
+        }
+    }
+
+    // Add event listeners for mouse down and mouse up events
+    directionButtons.forEach(function(button) {
+        var direction = button.classList[1]; // Assumes class name is 'up', 'down', 'left', or 'right'
+        var timerId;
+
+        button.addEventListener('mousedown', function() {
+            // Start a timer when button is pressed
+            timerId = setTimeout(function() {
+                handleLongPress(direction);
+            }, 1000); // 1 second for long press
+
+            // Send the short press command immediately
+            sendMessage(direction);
+        });
+
+        button.addEventListener('mouseup', function() {
+            // Clear the timer when button is released
+            clearTimeout(timerId);
+        });
+
+        // Also clear the timer if the mouse leaves the button
+        button.addEventListener('mouseleave', function() {
+            clearTimeout(timerId);
+        });
+    });
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Function to update the temperature display
+    function updateTemperature() {
+        // Send an AJAX request to fetch the temperature
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/get_temperature', true);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                // Update the temperature display with the received value
+                var temperature = JSON.parse(xhr.responseText).temperature;
+                document.getElementById('temperature').textContent = temperature;
+            }
+        };
+        xhr.send();
+    }
+
+    // Call the updateTemperature function initially
+    updateTemperature();
+
+    // Update the temperature every 5 seconds
+    setInterval(updateTemperature, 5000);
+});
+</script>
+</body>
+</html>
